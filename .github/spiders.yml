@@ -1,0 +1,22 @@
+version: 1
+
+scope:
+  include:
+    - "src/content/docs/**/*.md"
+    - "README.md"
+  exclude:
+    - "**/node_modules/**"
+    - "dist/**"
+    - ".astro/**"
+  ref: "main"
+
+metadata:
+  tags:
+    domain: "financial-services"
+    content-type: "documentation"
+    organization: "acme-corp"
+
+processing:
+  nonMarkdown: "ignore"
+  resolveLinks: true
+  maxFileSize: 1048576
