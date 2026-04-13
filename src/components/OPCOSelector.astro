@@ -1,0 +1,142 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/SiteTitle.astro';
+
+const opcos = [
+  { name: 'Corporate HQ', url: 'https://epam-acme-corp.github.io/corporate-docs/', id: 'corporate-docs' },
+  { name: 'Acme Tech', url: 'https://epam-acme-corp.github.io/tech-docs/', id: 'tech-docs' },
+  { name: 'Acme Distribution', url: 'https://epam-acme-corp.github.io/distribution-docs/', id: 'distribution-docs' },
+  { name: 'Acme Financial Services', url: 'https://epam-acme-corp.github.io/financial-services-docs/', id: 'financial-services-docs' },
+  { name: 'Acme Insurance', url: 'https://epam-acme-corp.github.io/insurance-docs/', id: 'insurance-docs' },
+  { name: 'Acme Media', url: 'https://epam-acme-corp.github.io/media-docs/', id: 'media-docs' },
+  { name: 'Acme Retail', url: 'https://epam-acme-corp.github.io/retail-docs/', id: 'retail-docs' },
+  { name: 'Acme Telco', url: 'https://epam-acme-corp.github.io/telco-docs/', id: 'telco-docs' },
+];
+
+const currentId = 'financial-services-docs';
+---
+
+<div class="opco-nav">
+  <Default {...Astro.props} />
+  <details class="opco-selector">
+    <summary aria-label="Switch organization" title="Switch organization">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+      </svg>
+    </summary>
+    <nav class="opco-dropdown" aria-label="Organization sites">
+      <div class="opco-dropdown-header">Acme Corp Subsidiaries</div>
+      {opcos.map(opco => (
+        <a
+          href={opco.url}
+          class:list={['opco-link', { current: opco.id === currentId }]}
+          aria-current={opco.id === currentId ? 'page' : undefined}
+        >
+          {opco.name}
+          {opco.id === currentId && <span class="current-badge">current</span>}
+        </a>
+      ))}
+    </nav>
+  </details>
+</div>
+
+<style>
+  .opco-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .opco-selector {
+    position: relative;
+  }
+
+  .opco-selector summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0.375rem;
+    color: var(--sl-color-white);
+    border-radius: 0.375rem;
+    transition: background 0.15s ease;
+  }
+
+  .opco-selector summary:hover {
+    background: var(--sl-color-gray-6);
+  }
+
+  .opco-selector summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .opco-dropdown {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    background: var(--sl-color-bg-nav);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    padding: 0.25rem 0;
+    min-width: 240px;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .opco-dropdown-header {
+    padding: 0.5rem 1rem 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--sl-color-gray-3);
+    border-bottom: 1px solid var(--sl-color-gray-6);
+    margin-bottom: 0.25rem;
+  }
+
+  .opco-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: var(--sl-color-white);
+    text-decoration: none;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    transition: background 0.1s ease;
+  }
+
+  .opco-link:hover {
+    background: var(--sl-color-gray-6);
+    text-decoration: none;
+  }
+
+  .opco-link.current {
+    font-weight: 600;
+    color: var(--sl-color-text-accent);
+  }
+
+  .current-badge {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.0625rem 0.375rem;
+    border-radius: 1rem;
+    background: var(--sl-color-text-accent);
+    color: var(--sl-color-black);
+    margin-left: auto;
+  }
+
+  /* Mobile: position dropdown to avoid overflow */
+  @media (max-width: 50rem) {
+    .opco-dropdown {
+      left: auto;
+      right: 0;
+      min-width: 200px;
+    }
+  }
+</style>

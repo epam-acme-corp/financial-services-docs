@@ -7,6 +7,9 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "Acme Financial Services",
+      components: {
+        SiteTitle: './src/components/OPCOSelector.astro',
+      },
       sidebar: [
         {
           label: "Overview",
