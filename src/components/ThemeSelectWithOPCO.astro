@@ -1,0 +1,59 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/ThemeSelect.astro';
+import Select from '@astrojs/starlight/components/Select.astro';
+
+const opcos = [
+  { label: 'Corporate HQ', value: 'https://epam-acme-corp.github.io/corporate-docs/', id: 'corporate-docs' },
+  { label: 'Acme Tech', value: 'https://epam-acme-corp.github.io/tech-docs/', id: 'tech-docs' },
+  { label: 'Acme Distribution', value: 'https://epam-acme-corp.github.io/distribution-docs/', id: 'distribution-docs' },
+  { label: 'Acme Financial Services', value: 'https://epam-acme-corp.github.io/financial-services-docs/', id: 'financial-services-docs' },
+  { label: 'Acme Insurance', value: 'https://epam-acme-corp.github.io/insurance-docs/', id: 'insurance-docs' },
+  { label: 'Acme Media', value: 'https://epam-acme-corp.github.io/media-docs/', id: 'media-docs' },
+  { label: 'Acme Retail', value: 'https://epam-acme-corp.github.io/retail-docs/', id: 'retail-docs' },
+  { label: 'Acme Telco', value: 'https://epam-acme-corp.github.io/telco-docs/', id: 'telco-docs' },
+];
+
+const currentId = 'financial-services-docs';
+
+const options = opcos.map(opco => ({
+  label: opco.label,
+  value: opco.value,
+  selected: opco.id === currentId,
+}));
+---
+
+<div class="opco-theme-group">
+  <starlight-opco-select>
+    <Select
+      icon="open-book"
+      label="Switch organization"
+      options={options}
+      width="10em"
+    />
+  </starlight-opco-select>
+  <Default {...Astro.props} />
+</div>
+
+<script>
+  class StarlightOPCOSelect extends HTMLElement {
+    constructor() {
+      super();
+      this.querySelector('select')?.addEventListener('change', (e) => {
+        if (e.currentTarget instanceof HTMLSelectElement) {
+          const url = e.currentTarget.value;
+          if (url) window.location.href = url;
+        }
+      });
+    }
+  }
+  customElements.define('starlight-opco-select', StarlightOPCOSelect);
+</script>
+
+<style>
+  .opco-theme-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+</style>
